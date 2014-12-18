@@ -25,6 +25,7 @@ module Sneakers
       :heartbeat          => 2,
       :exchange           => 'sneakers',
       :exchange_type      => :direct,
+      :exchange_durable   => true,
       :hooks              => {}
     }.freeze
 

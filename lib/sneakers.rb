@@ -59,6 +59,14 @@ module Sneakers
     @configured
   end
 
+  def forget_connection
+      @bunny = nil
+  end
+
+  def bunny
+      Bunny.new(CONFIG[:amqp], heartbeat: CONFIG[:heartbeat], vhost: CONFIG[:vhost], :logger => Sneakers::logger).start
+  end
+
   private
 
   def setup_general_logger!
