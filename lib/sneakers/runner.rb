@@ -4,7 +4,7 @@ require 'sneakers/workergroup'
 module Sneakers
   class Runner
     def initialize(worker_classes, opts={})
-      @runnerconfig = RunnerConfig.new(worker_classes)
+      @runnerconfig = RunnerConfig.new(worker_classes, opts)
     end
 
     def run
@@ -29,9 +29,9 @@ module Sneakers
       end
     end
 
-    def initialize(worker_classes)
+    def initialize(worker_classes, opts={})
       @worker_classes = worker_classes
-      @conf = {}
+      @conf = opts
     end
 
     def to_h
@@ -40,7 +40,6 @@ module Sneakers
 
 
     def reload_config!
-      Sneakers.logger.warn("Loading runner configuration...")
       config_file = Sneakers::CONFIG[:runner_config_file]
 
       if config_file
