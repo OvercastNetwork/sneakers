@@ -18,10 +18,7 @@ class Sneakers::Queue
     queue_durable = @opts[:queue_durable].nil? ? @opts[:durable] : @opts[:queue_durable]
     @queue = @channel.queue(@name, :durable => queue_durable, :arguments => @opts[:arguments])
 
-    routing_key = @opts[:routing_key] || @name
-    @routing_keys = [*routing_key]
-
-    @exchange = bind(@opts[:exchange], :type => @opts[:exchange_type], :durable => @opts[:exchange_durable])
+    @exchange = bind(@opts[:exchange])
 
     # NOTE: we are using the worker's options. This is necessary so the handler
     # has the same configuration as the worker. Also pass along the exchange and
@@ -45,10 +42,10 @@ class Sneakers::Queue
   end
 
     def bind(name, **opts)
-        exchange = @channel.exchange(name, **opts)
-        @routing_keys.each do |key|
-            @queue.bind(exchange, :routing_key => key)
-        end
+        exchange = @channel.exchange(name,
+                                     :type => opts[:type] || @opts[:exchange_type],
+                                     :durable => opts[:durable] || @opts[:exchange_durable])
+        @queue.bind(exchange, :routing_key => opts[:routing_key] || @opts[:routing_key] || @name)
         exchange
     end
 end
