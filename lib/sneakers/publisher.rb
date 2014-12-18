@@ -21,7 +21,7 @@ module Sneakers
 
     def connect!
       @channel = Sneakers.bunny.create_channel
-      @exchange = @channel.exchange(@opts[:exchange], type: @opts[:exchange_type], durable: @opts[:durable])
+      @exchange = @channel.exchange(@opts[:exchange], type: @opts[:exchange_type], durable: @opts[:exchange_durable])
     end
 
     def connected?
