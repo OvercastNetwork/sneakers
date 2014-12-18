@@ -10,7 +10,7 @@ module Sneakers
         connect! unless connected?
       end
       to_queue = options.delete(:to_queue)
-      options[:routing_key] ||= to_queue
+      options[:routing_key] ||= to_queue || @opts[:routing_key]
       Sneakers.logger.info {"publishing <#{msg}> to [#{options[:routing_key]}]"}
       @exchange.publish(msg, options)
     end
