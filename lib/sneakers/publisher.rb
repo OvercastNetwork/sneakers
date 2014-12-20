@@ -25,7 +25,7 @@ module Sneakers
     end
 
     def connected?
-      @channel && @channel.connected?
+      @channel && @channel.open?
     end
   end
 end
